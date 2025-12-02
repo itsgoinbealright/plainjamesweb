@@ -1,8 +1,12 @@
+// app/projects/[slug]/page.jsx
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getProject, projectsData } from "@/lib/projectsData";
+import CaseStudyInfo from "@/components/CaseStudyInfo";
+import CaseStudyScroller from "@/components/CaseStudyScroller";
 
 export default async function ProjectDetailPage({ params }) {
   const { slug } = await params;
@@ -11,6 +15,12 @@ export default async function ProjectDetailPage({ params }) {
   if (!project) {
     notFound();
   }
+
+  // Format images for the scroller
+  const scrollerImages = project.images.map((src, index) => ({
+    src,
+    alt: `${project.title} - Image ${index + 1}`,
+  }));
 
   return (
     <>
@@ -33,41 +43,19 @@ export default async function ProjectDetailPage({ params }) {
         <Navbar theme="dark" />
       </section>
 
-      {/* About the Project - Glides Up Over Image */}
-      <section className="relative py-24 px-5 md:px-10 bg-white z-10">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-forest-green mb-8">
-            About the Project
-          </h2>
-          <h3 className="text-2xl md:text-3xl font-bold mb-4">
-            {project.title}
-          </h3>
-          <p className="text-xl text-gray-600 mb-8">{project.subtitle}</p>
+      {/* Case Study Info - Credits & Description */}
+      <CaseStudyInfo
+        type={project.type}
+        architect={project.architect}
+        engineer={project.engineer}
+        trades={project.trades}
+        photography={project.photography}
+        description={project.description}
+      />
 
-          <div className="prose prose-lg max-w-none">
-            <p className="text-lg leading-relaxed text-gray-800">
-              {project.description}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Additional Project Images */}
-      <section className="relative py-24 px-5 md:px-10 bg-white z-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="space-y-8">
-            {project.images.map((image, index) => (
-              <Image
-                key={index}
-                src={image}
-                alt={`${project.title} - Image ${index + 1}`}
-                width={1200}
-                height={800}
-                className="w-full h-auto"
-              />
-            ))}
-          </div>
-        </div>
+      {/* Case Study Scroller - Image Gallery */}
+      <section className="relative bg-white z-10">
+        <CaseStudyScroller images={scrollerImages} />
       </section>
 
       <Footer />

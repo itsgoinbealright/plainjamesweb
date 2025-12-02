@@ -7,11 +7,11 @@ export default function ProcessTeaser() {
       {/* White space break */}
       <div className="h-12 bg-white" />
 
-      <section className="bg-white">
+      <section className="bg-white pt-[20vh]">
         {/* Full-width image */}
         <div className="w-full">
           <Image
-            src="/images/process-team.jpg"
+            src="/images/site.jpg"
             alt="Collaborative team"
             width={1920}
             height={1080}
@@ -21,7 +21,7 @@ export default function ProcessTeaser() {
 
         {/* Content section */}
         <div className="p-6">
-          <h2 className="text-4xl md:text-5xl font-bold text-forest-green mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Collaborative Craftsmen
           </h2>
           <p className="text-xl md:text-2xl text-black mb-8 leading-relaxed">

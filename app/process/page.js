@@ -4,15 +4,23 @@ import Footer from "@/components/Footer";
 export default function ProcessPage() {
   return (
     <>
-      <Navbar theme="light" />
+      <Navbar theme="dark" />
 
-      {/* Full-height Hero Image */}
-      <section className="relative h-screen w-full">
-        <img
-          src="/images/process-hero.jpg"
-          alt="Plain James workshop"
-          className="w-full h-full object-cover"
-        />
+      {/* Full-height Hero Video */}
+      <section className="relative h-screen w-full overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/videos/processvideo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/20" />
       </section>
 
       <main className="flex-grow bg-white">

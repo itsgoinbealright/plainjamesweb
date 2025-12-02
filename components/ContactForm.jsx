@@ -56,7 +56,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="p-3 bg-white">
+    <section className="p-3 bg-white pt-[20vh] pb-[20vh]">
       <div className="p-3">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Column - Form */}
@@ -188,15 +188,29 @@ export default function ContactForm() {
             </form>
           </div>
 
-          {/* Right Column - Image */}
-          <div className="h-full min-h-[600px] relative">
+          {/* Right Column - Desktop Image (portrait, beside form) */}
+          <div className="hidden md:block relative min-h-[600px]">
             <Image
-              src="/images/contact-construction.jpg"
-              alt="Construction site"
+              src="/images/contactimagedesktop.png"
+              alt="Plain James craftsmanship"
               fill
-              className="object-cover rounded-lg"
+              sizes="(max-width: 768px) 0vw, 50vw"
+              className="object-cover"
+              priority={false}
             />
           </div>
+        </div>
+
+        {/* Mobile Image (landscape, below form) */}
+        <div className="md:hidden relative w-full aspect-[16/9] mt-12">
+          <Image
+            src="/images/contactimagemobile.png"
+            alt="Plain James craftsmanship"
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority={false}
+          />
         </div>
       </div>
     </section>

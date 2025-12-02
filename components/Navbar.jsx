@@ -19,11 +19,11 @@ export default function Navbar({ theme = "dark" }) {
 
   return (
     <nav
-      className={`absolute top-6 left-6 right-6 md:top-5 md:left-5 md:right-5 z-50 ${textColor}`}
+      className={`absolute top-6 left-6 right-6 sm:top-5 sm:left-5 sm:right-5 z-50 ${textColor}`}
     >
-      <div className="flex justify-between items-center lg:items-start">
-        {/* Mobile/Tablet: Logo on Left */}
-        <Link href="/" className="relative lg:hidden w-[50%]">
+      <div className="flex justify-between items-center sm:items-start">
+        {/* Mobile: Logo on Left */}
+        <Link href="/" className="relative sm:hidden w-[50%]">
           <Image
             src="/logo.svg"
             alt="Plain James"
@@ -34,11 +34,11 @@ export default function Navbar({ theme = "dark" }) {
           />
         </Link>
 
-        {/* Mobile/Tablet: Shapes on Right */}
-        <div className="flex gap-[2vw] lg:hidden items-center">
+        {/* Mobile: Shapes on Right */}
+        <div className="flex sm:hidden gap-[2vw] items-center">
           {navLinks.map((link, index) => {
             const shapeColor = isActive(link.path)
-              ? "#2d5016"
+              ? "#9E3A26"
               : theme === "dark"
               ? "#ffffff"
               : "#000000";
@@ -54,32 +54,13 @@ export default function Navbar({ theme = "dark" }) {
                 aria-label={link.name}
               >
                 <svg viewBox="0 0 24 24" className="w-full h-full">
-                  {index === 0 && (
-                    <rect
-                      x="4"
-                      y="4"
-                      width="18"
-                      height="18"
-                      fill={shapeColor}
-                      className="transition-all duration-300 hover:fill-[#2d5016]"
-                    />
-                  )}
-                  {index === 1 && (
-                    <polygon
-                      points="12,2 22,22 2,22"
-                      fill={shapeColor}
-                      className="transition-all duration-300 hover:fill-[#2d5016]"
-                    />
-                  )}
-                  {index === 2 && (
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      fill={shapeColor}
-                      className="transition-all duration-300 hover:fill-[#2d5016]"
-                    />
-                  )}
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    fill={shapeColor}
+                    className="transition-all duration-300 hover:fill-[#9E3A26]"
+                  />
                 </svg>
               </Link>
             );
@@ -87,7 +68,7 @@ export default function Navbar({ theme = "dark" }) {
         </div>
 
         {/* Desktop: Nav Links on Left */}
-        <div className="hidden lg:flex flex-col gap-1 mt-3">
+        <div className="hidden sm:flex flex-col gap-1 mt-3">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -105,7 +86,7 @@ export default function Navbar({ theme = "dark" }) {
         </div>
 
         {/* Desktop: Logo on Right */}
-        <Link href="/" className="relative hidden lg:block">
+        <Link href="/" className="relative hidden sm:block">
           <Image
             src="/logo.svg"
             alt="Plain James"
