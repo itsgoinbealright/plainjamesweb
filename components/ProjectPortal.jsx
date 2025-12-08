@@ -55,6 +55,7 @@ export default function ProjectPortal({ estimate, invoices, invoiceSummary, cale
   const hasContractorPinterest = project?.contractorPinterest;
   const hasInvoices = invoices && invoices.length > 0;
   const hasCalendar = calendar && calendar.length > 0;
+  const hasScope = estimate?.scope && estimate.scope.trim().length > 0;
 
   return (
     <div className="min-h-screen bg-[#F5F3EF]">
@@ -100,26 +101,53 @@ export default function ProjectPortal({ estimate, invoices, invoiceSummary, cale
         </Collapsible>
 
         <Collapsible title="Estimate" defaultOpen={false}>
-          {Object.entries(estimate?.groupedItems || {}).map(([section, items]) => (
-            <div key={section} className="mb-6">
+          {/* Scope of Work */}
+          {hasScope && (
+            <div className="mb-6 pb-6 border-b border-[#D4D4D4]">
               <p className="text-xs font-medium text-[#7C8C6E] tracking-wide mb-3">
-                {section.toUpperCase()}
+                SCOPE OF WORK
               </p>
-              {items.map((item, idx) => (
-                <div key={idx} className="flex justify-between py-2 border-b border-[#D4D4D4]">
-                  <div className="flex-1">
-                    <span className="text-sm text-[#2C2C2C]">{item.description}</span>
-                    <span className="text-xs text-[#A8A8A8] ml-2">
-                      {item.qty} {item.unit}
-                    </span>
-                  </div>
-                  <span className="text-sm text-[#2C2C2C]">
-                    {item.lineTotal > 0 ? formatCurrency(item.lineTotal) : '-'}
-                  </span>
+              <p className="text-sm text-[#5C5C5C] leading-relaxed">
+                {estimate.scope}
+              </p>
+            </div>
+          )}
+
+          {/* Consolidated Client Groups */}
+          {estimate?.clientGroups && estimate.clientGroups.length > 0 ? (
+            <div className="mb-4">
+              {estimate.clientGroups.map((item, idx) => (
+                <div key={idx} className="flex justify-between py-3 border-b border-[#D4D4D4]">
+                  <span className="text-sm text-[#2C2C2C]">{item.group}</span>
+                  <span className="text-sm text-[#2C2C2C]">{formatCurrency(item.total)}</span>
                 </div>
               ))}
             </div>
-          ))}
+          ) : (
+            /* Fallback to detailed view if no client groups */
+            Object.entries(estimate?.groupedItems || {}).map(([section, items]) => (
+              <div key={section} className="mb-6">
+                <p className="text-xs font-medium text-[#7C8C6E] tracking-wide mb-3">
+                  {section.toUpperCase()}
+                </p>
+                {items.map((item, idx) => (
+                  <div key={idx} className="flex justify-between py-2 border-b border-[#D4D4D4]">
+                    <div className="flex-1">
+                      <span className="text-sm text-[#2C2C2C]">{item.description}</span>
+                      <span className="text-xs text-[#A8A8A8] ml-2">
+                        {item.qty} {item.unit}
+                      </span>
+                    </div>
+                    <span className="text-sm text-[#2C2C2C]">
+                      {item.lineTotal > 0 ? formatCurrency(item.lineTotal) : '-'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ))
+          )}
+
+          {/* Totals */}
           <div className="border-t border-[#2C2C2C] pt-4 mt-4">
             <div className="flex justify-between py-1 text-sm">
               <span className="text-[#5C5C5C]">Subtotal</span>

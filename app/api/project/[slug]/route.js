@@ -14,11 +14,18 @@ function getGoogleAuth() {
   });
 }
 
-function parseEstimateData(header, lineItems) {
+function parseEstimateData(header, scopeRows, lineItems) {
   const getValue = (label) => {
     const row = header.find(r => r[0] === label);
     return row ? row[1] || '' : '';
   };
+
+  // Scope is in rows 13-17 (merged cells) - combine non-empty cells
+  const scope = scopeRows
+    .map(row => row[0])
+    .filter(Boolean)
+    .join(' ')
+    .trim();
 
   const items = lineItems
     .filter(row => {
@@ -31,30 +38,52 @@ function parseEstimateData(header, lineItems) {
       description: row[3] || '',
       unitPrice: parseFloat(row[6]?.toString().replace(/[$,]/g, '')) || 0,
       lineTotal: parseFloat(row[7]?.toString().replace(/[$,]/g, '')) || 0,
+      clientGroup: row[8] || 'Other', // Column I - Client Group
     }))
     .filter(item => item.qty > 0);
 
+  // Detailed grouping by Section (for your reference)
   const groupedItems = items.reduce((acc, item) => {
     if (!acc[item.section]) acc[item.section] = [];
     acc[item.section].push(item);
     return acc;
   }, {});
 
+  // Consolidated grouping by Client Group (for client view)
+  const clientGroupTotals = items.reduce((acc, item) => {
+    const group = item.clientGroup || 'Other';
+    if (!acc[group]) acc[group] = 0;
+    acc[group] += item.lineTotal;
+    return acc;
+  }, {});
+
+  // Convert to array and sort by a logical order
+  const groupOrder = ['Labour', 'Sheet Goods', 'Hardwood', 'Finishing', 'Hardware', 'Fasteners', 'Other'];
+  const clientGroups = Object.entries(clientGroupTotals)
+    .map(([group, total]) => ({ group, total }))
+    .filter(item => item.total > 0)
+    .sort((a, b) => {
+      const aIndex = groupOrder.indexOf(a.group);
+      const bIndex = groupOrder.indexOf(b.group);
+      return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex);
+    });
+
   const subtotal = items.reduce((sum, item) => sum + item.lineTotal, 0);
   const gst = subtotal * 0.05;
   const total = subtotal + gst;
 
   return {
-    projectId: getValue('Project ID'),
+    projectId: getValue('Estimate ID'),
     clientName: getValue('Client Name'),
     clientEmail: getValue('Client Email'),
     clientPhone: getValue('Client Phone'),
     projectAddress: getValue('Project Address'),
     date: getValue('Date'),
     validUntil: getValue('Valid Until'),
-    scope: header.find(r => r[0]?.includes('Describe'))?.[0] || '',
+    scope,
     lineItems: items,
-    groupedItems,
+    groupedItems,      // Detailed view (by Section)
+    clientGroups,      // Consolidated view (by Client Group)
     subtotal,
     gst,
     total,
@@ -138,17 +167,19 @@ export async function GET(request, { params }) {
     const response = await sheets.spreadsheets.values.batchGet({
       spreadsheetId,
       ranges: [
-        'Estimate!A1:I15',
-        'Estimate!A19:I100',
-        'Invoices!A4:K10',
-        'Invoices!A9:B12',
-        'Calendar!A4:D13',
-        'Project!A3:B9',
+        'Estimate!A3:B10',      // Header info (client details)
+        'Estimate!A13:A17',     // Scope of work (rows 13-17)
+        'Estimate!A20:I100',    // Line items (now includes Column I for Client Group)
+        'Invoices!A4:K20',      // Invoice rows
+        'Invoices!A22:B26',     // Invoice summary
+        'Calendar!A4:D20',      // Calendar events
+        'Project!A3:B10',       // Project info
       ],
     });
 
     const [
       headerData,
+      scopeData,
       lineItemsData,
       invoicesData,
       invoiceSummaryData,
@@ -156,7 +187,7 @@ export async function GET(request, { params }) {
       projectData,
     ] = response.data.valueRanges.map(r => r.values || []);
 
-    const estimate = parseEstimateData(headerData, lineItemsData);
+    const estimate = parseEstimateData(headerData, scopeData, lineItemsData);
     const invoices = parseInvoices(invoicesData);
     const invoiceSummary = parseInvoiceSummary(invoiceSummaryData);
     const calendar = parseCalendar(calendarData);

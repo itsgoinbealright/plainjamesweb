@@ -23,6 +23,7 @@ export default function ProjectsPage() {
               subtitle={project.subtitle}
               accentTitle={project.accentTitle}
               slug={project.slug}
+              scroll={true}
             />
           ))}
         </div>

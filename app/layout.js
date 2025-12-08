@@ -1,5 +1,7 @@
+// app/layout.jsx
 import { Inter } from "next/font/google";
 import "./globals.css";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -7,17 +9,17 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Plain James - Custom Millwork & Cabinetry",
-  description: "Premium custom cabinetry and millwork in Winnipeg, Manitoba.",
+  title: "Plain James",
+  description: "Millwork, Design & Build",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="overflow-x-hidden">
-      <body
-        className={`${inter.className} flex flex-col min-h-screen overflow-x-hidden`}
-      >
-        {children}
+      <body className={`${inter.className} min-h-screen`}>
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );
