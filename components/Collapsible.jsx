@@ -19,7 +19,7 @@ export default function Collapsible({ title, children, defaultOpen }) {
           {title}
         </span>
         <span className="text-[#7C8C6E] text-lg">
-          {isOpen ? String.fromCharCode(9679) : String.fromCharCode(9675)}
+          {isOpen ? String.fromCharCode(9675) : String.fromCharCode(9679)}
         </span>
       </button>
       

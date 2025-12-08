@@ -66,7 +66,7 @@ export default function ProjectPortal({ estimate, invoices, invoiceSummary, cale
       <div className="px-5 pb-8">
         <StatusBar project={project} estimate={estimate} calendar={calendar} />
 
-        <Collapsible title="Inspiration" defaultOpen={true}>
+        <Collapsible title="Inspiration" defaultOpen={false}>
           <div className="space-y-4">
             {hasClientPinterest ? (
               <div>
@@ -100,7 +100,7 @@ export default function ProjectPortal({ estimate, invoices, invoiceSummary, cale
           </div>
         </Collapsible>
 
-        <Collapsible title="Estimate" defaultOpen={false}>
+        <Collapsible title="Estimate" defaultOpen={true}>
           {/* Scope of Work */}
           {hasScope && (
             <div className="mb-6 pb-6 border-b border-[#D4D4D4]">

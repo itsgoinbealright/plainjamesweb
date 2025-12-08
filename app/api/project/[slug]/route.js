@@ -58,7 +58,7 @@ function parseEstimateData(header, scopeRows, lineItems) {
   }, {});
 
   // Convert to array and sort by a logical order
-  const groupOrder = ['Labour', 'Sheet Goods', 'Hardwood', 'Finishing', 'Hardware', 'Fasteners', 'Other'];
+  const groupOrder = ['Labour', 'Sheet Goods', 'Hardwood', 'Finishing', 'Hinges', 'Hardware', 'Fasteners', 'Other'];
   const clientGroups = Object.entries(clientGroupTotals)
     .map(([group, total]) => ({ group, total }))
     .filter(item => item.total > 0)
