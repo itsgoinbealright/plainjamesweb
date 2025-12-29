@@ -9,12 +9,12 @@ export default function ContactForm() {
     email: "",
     phone: "",
     message: "",
-    commencementDate: "",
-    budget: "",
     location: "",
-    hearAbout: "",
     architect: "",
-    designStage: "",
+    workType: "",
+    scope: [],
+    preferredContact: "",
+    phoneType: "",
   });
 
   const [status, setStatus] = useState("");
@@ -26,6 +26,15 @@ export default function ContactForm() {
     });
   };
 
+  const handleScopeToggle = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      scope: prev.scope.includes(value)
+        ? prev.scope.filter((s) => s !== value)
+        : [...prev.scope, value],
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("sending");
@@ -34,7 +43,10 @@ export default function ContactForm() {
       await emailjs.send(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        formData,
+        {
+          ...formData,
+          scope: formData.scope.join(", "),
+        },
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       );
       setStatus("success");
@@ -42,12 +54,12 @@ export default function ContactForm() {
         email: "",
         phone: "",
         message: "",
-        commencementDate: "",
-        budget: "",
         location: "",
-        hearAbout: "",
         architect: "",
-        designStage: "",
+        workType: "",
+        scope: [],
+        preferredContact: "",
+        phoneType: "",
       });
     } catch (error) {
       setStatus("error");
@@ -55,15 +67,36 @@ export default function ContactForm() {
     }
   };
 
-  return (
-    <section className="p-3 bg-white pt-[20vh] pb-[20vh]">
-      <div className="p-3">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Left Column - Form */}
-          <div>
-            <h2 className="text-3xl font-bold mb-8">Project Enquiry</h2>
+  const architectOptions = [
+    { value: "yes", label: "Yup" },
+    { value: "no", label: "Nope" },
+    { value: "unsure", label: "Not sure" },
+  ];
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+  const workTypeOptions = [
+    { value: "interior", label: "Interior" },
+    { value: "exterior", label: "Exterior" },
+    { value: "both", label: "Both" },
+  ];
+
+  const scopeOptions = [
+    { value: "millwork", label: "Millwork", icon: "🪵" },
+    { value: "carpentry", label: "Carpentry", icon: "🔨" },
+    { value: "renovation", label: "Renovation", icon: "🏠" },
+    { value: "project-management", label: "PM", icon: "📋" },
+    { value: "design", label: "Design", icon: "✏️" },
+  ];
+
+  return (
+    <section className="bg-white min-h-screen py-20 px-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        {/* Left - Form */}
+        <div>
+          <h2 className="text-3xl font-bold mb-8">Project Enquiry</h2>
+
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Email with preference */}
+            <div className="flex items-end gap-4">
               <input
                 type="email"
                 name="email"
@@ -71,145 +104,201 @@ export default function ContactForm() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors"
+                className="flex-1 border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors bg-transparent"
               />
+              <label className="flex items-center gap-2 cursor-pointer pb-3">
+                <input
+                  type="radio"
+                  name="preferredContact"
+                  value="email"
+                  checked={formData.preferredContact === "email"}
+                  onChange={handleChange}
+                  className="w-4 h-4 accent-black"
+                />
+                <span className="text-sm text-gray-500">Preferred</span>
+              </label>
+            </div>
 
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Phone number"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                className="w-full border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors"
-              />
-
-              <textarea
-                name="message"
-                placeholder="Tell us a bit about yourself and your project?"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                rows="4"
-                className="w-full border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors resize-none"
-              />
-
-              <input
-                type="text"
-                name="commencementDate"
-                placeholder="Target commencement date"
-                value={formData.commencementDate}
-                onChange={handleChange}
-                className="w-full border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors"
-              />
-
-              <select
-                name="budget"
-                value={formData.budget}
-                onChange={handleChange}
-                className="w-full border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors bg-transparent text-gray-500"
-              >
-                <option value="">Estimated budget</option>
-                <option value="<50k">Less than $50,000</option>
-                <option value="50k-100k">$50,000 - $100,000</option>
-                <option value="100k-250k">$100,000 - $250,000</option>
-                <option value="250k+">$250,000+</option>
-              </select>
-
-              <input
-                type="text"
-                name="location"
-                placeholder="Project location"
-                value={formData.location}
-                onChange={handleChange}
-                className="w-full border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors"
-              />
-
-              <select
-                name="hearAbout"
-                value={formData.hearAbout}
-                onChange={handleChange}
-                className="w-full border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors bg-transparent text-gray-500"
-              >
-                <option value="">How did you hear about us?</option>
-                <option value="google">Google</option>
-                <option value="referral">Referral</option>
-                <option value="social">Social Media</option>
-                <option value="other">Other</option>
-              </select>
-
-              <select
-                name="architect"
-                value={formData.architect}
-                onChange={handleChange}
-                className="w-full border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors bg-transparent text-gray-500"
-              >
-                <option value="">
-                  Is there an Architect involved in the project?
-                </option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-                <option value="not-yet">Not Yet</option>
-              </select>
-
-              <select
-                name="designStage"
-                value={formData.designStage}
-                onChange={handleChange}
-                className="w-full border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors bg-transparent text-gray-500"
-              >
-                <option value="">What stage of design are you at?</option>
-                <option value="concept">Concept</option>
-                <option value="design-dev">Design Development</option>
-                <option value="construction-docs">
-                  Construction Documents
-                </option>
-                <option value="ready">Ready to Build</option>
-              </select>
-
-              <button
-                type="submit"
-                disabled={status === "sending"}
-                className="bg-black text-white px-8 py-3 font-medium hover:bg-forest-green transition-colors disabled:opacity-50"
-              >
-                {status === "sending" ? "Sending..." : "Submit"}
-              </button>
-
-              {status === "success" && (
-                <p className="text-forest-green">
-                  Thank you! We'll be in touch soon.
-                </p>
+            {/* Phone with preference and call/text */}
+            <div className="space-y-3">
+              <div className="flex items-end gap-4">
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone number"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                  className="flex-1 border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors bg-transparent"
+                />
+                <label className="flex items-center gap-2 cursor-pointer pb-3">
+                  <input
+                    type="radio"
+                    name="preferredContact"
+                    value="phone"
+                    checked={formData.preferredContact === "phone"}
+                    onChange={handleChange}
+                    className="w-4 h-4 accent-black"
+                  />
+                  <span className="text-sm text-gray-500">Preferred</span>
+                </label>
+              </div>
+              {formData.preferredContact === "phone" && (
+                <div className="flex gap-4 pl-1">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="phoneType"
+                      value="call"
+                      checked={formData.phoneType === "call"}
+                      onChange={handleChange}
+                      className="w-4 h-4 accent-black"
+                    />
+                    <span className="text-sm">Call</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="phoneType"
+                      value="text"
+                      checked={formData.phoneType === "text"}
+                      onChange={handleChange}
+                      className="w-4 h-4 accent-black"
+                    />
+                    <span className="text-sm">Text</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="phoneType"
+                      value="either"
+                      checked={formData.phoneType === "either"}
+                      onChange={handleChange}
+                      className="w-4 h-4 accent-black"
+                    />
+                    <span className="text-sm">Either</span>
+                  </label>
+                </div>
               )}
-              {status === "error" && (
-                <p className="text-red-600">
-                  Something went wrong. Please try again.
-                </p>
-              )}
-            </form>
-          </div>
+            </div>
 
-          {/* Right Column - Desktop Image (portrait, beside form) */}
-          <div className="hidden md:block relative min-h-[600px]">
-            <Image
-              src="/images/contactimagedesktop.png"
-              alt="Plain James craftsmanship"
-              fill
-              sizes="(max-width: 768px) 0vw, 50vw"
-              className="object-cover"
-              priority={false}
+            <input
+              type="text"
+              name="location"
+              placeholder="Project location"
+              value={formData.location}
+              onChange={handleChange}
+              className="w-full border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors bg-transparent"
             />
-          </div>
+
+            <div className="pb-4">
+              <p className="text-gray-500 mb-3">Interior or exterior?</p>
+              <div className="flex gap-2 py-2 flex-wrap">
+                {workTypeOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() =>
+                      setFormData({ ...formData, workType: option.value })
+                    }
+                    className={`px-5 py-2 rounded-full border-2 transition-all duration-200 ${
+                      formData.workType === option.value
+                        ? "border-black bg-black text-white scale-105"
+                        : "border-gray-200 hover:border-gray-400"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="pb-4">
+              <p className="text-gray-500 mb-3">How can we help?</p>
+              <div className="flex gap-2 py-2 flex-wrap">
+                {scopeOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => handleScopeToggle(option.value)}
+                    className={`px-4 py-2 rounded-full border-2 transition-all duration-200 ${
+                      formData.scope.includes(option.value)
+                        ? "border-black bg-black text-white scale-105"
+                        : "border-gray-200 hover:border-gray-400"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+              {formData.scope.length > 0 && (
+                <p className="text-sm text-gray-400 mt-3">
+                  {formData.scope.length} selected
+                </p>
+              )}
+            </div>
+
+            <div className="pb-4">
+              <p className="text-gray-500 mb-3">
+                Architect or designer involved?
+              </p>
+              <div className="flex gap-2 py-2 flex-wrap">
+                {architectOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() =>
+                      setFormData({ ...formData, architect: option.value })
+                    }
+                    className={`px-5 py-2 rounded-full border-2 transition-all duration-200 ${
+                      formData.architect === option.value
+                        ? "border-black bg-black text-white scale-105"
+                        : "border-gray-200 hover:border-gray-400"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <textarea
+              name="message"
+              placeholder="Anything else we should know?"
+              value={formData.message}
+              onChange={handleChange}
+              rows="3"
+              className="w-full border-b border-gray-300 py-3 focus:border-forest-green focus:outline-none transition-colors resize-none bg-transparent"
+            />
+
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              className="bg-black text-white px-8 py-3 font-medium hover:bg-forest-green transition-colors disabled:opacity-50"
+            >
+              {status === "sending" ? "Sending..." : "Submit"}
+            </button>
+
+            {status === "success" && (
+              <p className="text-forest-green">
+                Thank you! We'll be in touch soon.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="text-red-600">
+                Something went wrong. Please try again.
+              </p>
+            )}
+          </form>
         </div>
 
-        {/* Mobile Image (landscape, below form) */}
-        <div className="md:hidden relative w-full aspect-[16/9] mt-12">
+        {/* Right - Image */}
+        <div className="hidden lg:block relative min-h-[600px]">
           <Image
-            src="/images/contactimagemobile.png"
+            src="/images/contact-image.jpg"
             alt="Plain James craftsmanship"
             fill
-            sizes="100vw"
             className="object-cover"
-            priority={false}
           />
         </div>
       </div>

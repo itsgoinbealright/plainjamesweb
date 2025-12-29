@@ -1,5 +1,38 @@
+"use client";
+
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Link from "next/link";
+import {
+  finishedSheetGoods,
+  boxSheetGoods,
+  osmoFinishes,
+  osmoWaxColors,
+  hardwoods,
+  linolieColors,
+  joineryStyles,
+} from "@/lib/materialsData";
+
+function Accordion({ title, children, defaultOpen = false }) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  return (
+    <div className="border-b border-gray-200">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full py-5 flex justify-between items-center text-left"
+      >
+        <span className="text-xl md:text-2xl font-bold tracking-tight">
+          {title}
+        </span>
+        <span className="text-2xl text-gray-400">{isOpen ? "−" : "+"}</span>
+      </button>
+
+      {isOpen && <div className="pb-8">{children}</div>}
+    </div>
+  );
+}
 
 export default function ProcessPage() {
   return (
@@ -17,77 +50,153 @@ export default function ProcessPage() {
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/videos/processvideo.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
         </video>
-        {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/20" />
       </section>
 
       <main className="flex-grow bg-white">
-        {/* Two-Column Section: Intro + Process List */}
-        <section className="px-6 py-16 md:py-24 md:px-12 lg:px-24 xl:px-32">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
-            {/* Left Column - Introduction */}
-            <div className="pt-7">
-              <p className="text-base md:text-lg text-gray-900 font-light leading-snug tracking-tight">
-                Every project begins with understanding your space and vision.
-                From initial contact to final walkthrough, we handle each step
-                with precision and care.
-              </p>
+        {/* Intro Section */}
+        <section className="px-4 py-16 md:py-24">
+          <div className="max-w-4xl md:ml-0 md:mr-auto">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight leading-tight">
+              How we build
+            </h1>
+
+            <p className="text-xl md:text-2xl lg:text-3xl text-gray-800 tracking-tight leading-tight font-bold">
+              This is how we work — the materials, finishes, and details that go
+              into every project. Consider it a reference for what's possible.
+            </p>
+
+            <p className="text-xl md:text-2xl lg:text-3xl text-gray-800 tracking-tight leading-tight font-bold mt-4">
+              Fill out the form, send an email, or DM us on Instagram to get
+              started. The more context, the faster we move.
+            </p>
+
+            <div className="pt-12">
+              <Link
+                href="/contact"
+                className="inline-block border-2 border-black text-black px-8 py-3 font-bold tracking-tight hover:bg-black hover:text-white transition-colors"
+              >
+                Get in touch
+              </Link>
             </div>
+          </div>
+        </section>
 
-            {/* Right Column - Process Steps */}
-            <div>
-              {/* Step 1 - Discovery */}
-              <div className="mb-6">
-                <h2 className="text-base md:text-lg font-bold mb-1 tracking-tight">
-                  Discovery
-                </h2>
-                <p className="text-base md:text-lg text-gray-900 font-normal leading-snug tracking-tight">
-                  We begin with a conversation about your project—reviewing
-                  photos, discussing your needs, and exploring design
-                  possibilities. Reach out via our contact form or email
-                  howdy@plainjames.ca. This helps us align on vision, budget,
-                  and timeline before moving forward.
-                </p>
-              </div>
+        {/* Materials Accordion */}
+        <section className="px-4 py-16 md:py-24 border-t border-gray-100">
+          <div className="max-w-4xl md:ml-0 md:mr-auto lg:max-w-none">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 tracking-tight leading-tight">
+              Materials
+            </h2>
 
-              {/* Step 2 - Quotation */}
-              <div className="mb-6">
-                <h2 className="text-base md:text-lg font-bold mb-1 tracking-tight">
-                  Quotation
-                </h2>
-                <p className="text-base md:text-lg text-gray-900 font-normal leading-snug tracking-tight">
-                  Based on our discovery meeting, we develop a design proposal
-                  and job estimate. You'll receive a transparent quote that
-                  breaks down materials, labor, and project management. Once we
-                  sign off, we get to work.
-                </p>
-              </div>
+            <div className="lg:max-w-none">
+              <Accordion title="Sheet Goods">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div>
+                    <h4 className="text-sm text-gray-400 mb-4 tracking-tight">
+                      Finished
+                    </h4>
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-2">
+                      {finishedSheetGoods.map((item) => (
+                        <p key={item.id} className="text-lg tracking-tight">
+                          {item.name}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-sm text-gray-400 mb-4 tracking-tight">
+                      Box
+                    </h4>
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-2">
+                      {boxSheetGoods.map((item) => (
+                        <p key={item.id} className="text-lg tracking-tight">
+                          {item.name}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Accordion>
 
-              {/* Step 3 - Management & Fabrication */}
-              <div className="mb-6">
-                <h2 className="text-base md:text-lg font-bold mb-1 tracking-tight">
-                  Management & Fabrication
-                </h2>
-                <p className="text-base md:text-lg text-gray-900 font-normal leading-snug tracking-tight">
-                  We coordinate fabrication, material ordering, and
-                  installation. Throughout the project, we keep you informed and
-                  ensure everything moves forward smooth as possible.
-                </p>
-              </div>
+              <Accordion title="Hardwoods">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-2">
+                  {hardwoods?.map((item) => (
+                    <p key={item.id} className="text-lg tracking-tight">
+                      {item.name}
+                    </p>
+                  ))}
+                </div>
+              </Accordion>
 
-              {/* Step 4 - Walkthrough */}
-              <div className="mb-6">
-                <h2 className="text-base md:text-lg font-bold mb-1 tracking-tight">
-                  Walkthrough
-                </h2>
-                <p className="text-base md:text-lg text-gray-900 font-normal leading-snug tracking-tight">
-                  After install, we walk through the completed project together.
-                  We're available to address any questions and ensure you're
-                  completely satisfied with the finished work.
-                </p>
-              </div>
+              <Accordion title="Finishes">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div>
+                    <h4 className="text-sm text-gray-400 mb-4 tracking-tight">
+                      OSMO Oils
+                    </h4>
+                    <div className="space-y-2">
+                      {osmoFinishes?.map((item) => (
+                        <p key={item.id} className="text-lg tracking-tight">
+                          {item.name}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-sm text-gray-400 mb-4 tracking-tight">
+                      OSMO Wood Wax
+                    </h4>
+                    <div className="flex flex-wrap gap-4">
+                      {osmoWaxColors?.map((wax) => (
+                        <div key={wax.id} className="flex items-center gap-2">
+                          <div
+                            className="w-4 h-4 rounded-full border border-gray-200"
+                            style={{ backgroundColor: wax.color }}
+                          />
+                          <span className="text-base tracking-tight">
+                            {wax.name}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-sm text-gray-400 mb-4 tracking-tight">
+                      Linolie & Pigment
+                    </h4>
+                    <div className="flex flex-wrap gap-4">
+                      {linolieColors?.map((color) => (
+                        <div key={color.id} className="flex items-center gap-2">
+                          <div
+                            className="w-4 h-4 rounded-full border border-gray-200"
+                            style={{ backgroundColor: color.color }}
+                          />
+                          <span className="text-base tracking-tight">
+                            {color.name}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Accordion>
+
+              <Accordion title="Joinery & Style">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {joineryStyles?.map((style) => (
+                    <div key={style.id}>
+                      <h4 className="text-lg font-bold tracking-tight mb-1">
+                        {style.name}
+                      </h4>
+                      <p className="text-base text-gray-600 tracking-tight leading-snug">
+                        {style.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </Accordion>
             </div>
           </div>
         </section>

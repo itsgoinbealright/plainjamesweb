@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export default function Navbar({ theme = "dark" }) {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
     { name: "Projects", path: "/projects" },
@@ -21,9 +23,9 @@ export default function Navbar({ theme = "dark" }) {
     <nav
       className={`absolute top-6 left-6 right-6 sm:top-5 sm:left-5 sm:right-5 z-50 ${textColor}`}
     >
-      <div className="flex justify-between items-center sm:items-start">
+      <div className="flex justify-between items-start">
         {/* Mobile: Logo on Left */}
-        <Link href="/" className="relative sm:hidden w-[50%]">
+        <Link href="/" className="relative sm:hidden w-[75%]">
           <Image
             src="/logo.svg"
             alt="Plain James"
@@ -34,37 +36,52 @@ export default function Navbar({ theme = "dark" }) {
           />
         </Link>
 
-        {/* Mobile: Shapes on Right */}
-        <div className="flex sm:hidden gap-[2vw] items-center">
-          {navLinks.map((link, index) => {
-            const shapeColor = isActive(link.path)
-              ? "#9E3A26"
-              : theme === "dark"
-              ? "#ffffff"
-              : "#000000";
+        {/* Mobile: Hamburger + Dropdown on Right */}
+        <div className="sm:hidden flex flex-col items-end">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2"
+            aria-label="Menu"
+          >
+            <svg
+              className="w-8 h-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+            >
+              {isOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
+            </svg>
+          </button>
 
-            return (
-              <Link
-                key={link.path}
-                href={link.disabled ? "#" : link.path}
-                className={`relative w-[10vw] h-[10vw] transition-all duration-300 ${
-                  link.disabled ? "opacity-30 cursor-not-allowed" : ""
-                } ${isActive(link.path) ? "scale-110" : ""}`}
-                onClick={(e) => link.disabled && e.preventDefault()}
-                aria-label={link.name}
-              >
-                <svg viewBox="0 0 24 24" className="w-full h-full">
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    fill={shapeColor}
-                    className="transition-all duration-300 hover:fill-[#9E3A26]"
-                  />
-                </svg>
-              </Link>
-            );
-          })}
+          {isOpen && (
+            <div className="flex flex-col items-end gap-2 mt-2">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  href={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`text-lg font-bold tracking-tight ${
+                    isActive(link.path) ? "text-forest-green" : ""
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Desktop: Nav Links on Left */}
@@ -72,13 +89,8 @@ export default function Navbar({ theme = "dark" }) {
           {navLinks.map((link) => (
             <Link
               key={link.path}
-              href={link.disabled ? "#" : link.path}
-              className={`
-                text-lg font-bold leading-tight tracking-tighter
-                ${link.disabled ? "opacity-30 cursor-not-allowed" : ""}
-                hover:text-forest-green transition-colors duration-300
-              `}
-              onClick={(e) => link.disabled && e.preventDefault()}
+              href={link.path}
+              className="text-lg font-bold leading-tight tracking-tighter hover:text-forest-green transition-colors duration-300"
             >
               {link.name}
             </Link>
