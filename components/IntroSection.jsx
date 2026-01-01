@@ -6,8 +6,8 @@ export default function IntroSection() {
           Small Project Specialists.
         </h2>
         <p className="text-xl md:text-2xl lg:text-3xl text-gray-800 tracking-tight leading-tight font-bold">
-          A careful woodworker that has a few friends in other trades. Sometimes
-          we manage the project, sometimes we cover the millwork scope.
+          A woodworker with a network. Full project management or millwork only
+          — depends on what you need. ( this needs alot of work )
         </p>
       </div>
     </section>

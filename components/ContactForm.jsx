@@ -88,11 +88,11 @@ export default function ContactForm() {
   ];
 
   return (
-    <section className="bg-white min-h-screen py-20 px-5">
+    <section className="bg-white min-h-screen px-5">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Left - Form */}
         <div>
-          <h2 className="text-3xl font-bold mb-8">Project Enquiry</h2>
+          <h2 className="text-3xl font-bold mb-4">Project Enquiry</h2>
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Email with preference */}
@@ -192,28 +192,6 @@ export default function ContactForm() {
             />
 
             <div className="pb-4">
-              <p className="text-gray-500 mb-3">Interior or exterior?</p>
-              <div className="flex gap-2 py-2 flex-wrap">
-                {workTypeOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    onClick={() =>
-                      setFormData({ ...formData, workType: option.value })
-                    }
-                    className={`px-5 py-2 rounded-full border-2 transition-all duration-200 ${
-                      formData.workType === option.value
-                        ? "border-black bg-black text-white scale-105"
-                        : "border-gray-200 hover:border-gray-400"
-                    }`}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="pb-4">
               <p className="text-gray-500 mb-3">How can we help?</p>
               <div className="flex gap-2 py-2 flex-wrap">
                 {scopeOptions.map((option) => (
@@ -236,30 +214,6 @@ export default function ContactForm() {
                   {formData.scope.length} selected
                 </p>
               )}
-            </div>
-
-            <div className="pb-4">
-              <p className="text-gray-500 mb-3">
-                Architect or designer involved?
-              </p>
-              <div className="flex gap-2 py-2 flex-wrap">
-                {architectOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    onClick={() =>
-                      setFormData({ ...formData, architect: option.value })
-                    }
-                    className={`px-5 py-2 rounded-full border-2 transition-all duration-200 ${
-                      formData.architect === option.value
-                        ? "border-black bg-black text-white scale-105"
-                        : "border-gray-200 hover:border-gray-400"
-                    }`}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
             </div>
 
             <textarea

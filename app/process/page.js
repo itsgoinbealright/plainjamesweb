@@ -4,13 +4,13 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import MaterialCarousel from "@/components/MaterialCarousel";
 import {
-  finishedSheetGoods,
-  boxSheetGoods,
-  osmoFinishes,
-  osmoWaxColors,
-  hardwoods,
-  linolieColors,
+  woods,
+  boxMaterials,
+  osmoPolyx,
+  osmoWoodWax,
+  linolie,
   joineryStyles,
 } from "@/lib/materialsData";
 
@@ -83,7 +83,7 @@ export default function ProcessPage() {
           </div>
         </section>
 
-        {/* Materials Accordion */}
+        {/* Materials Section */}
         <section className="px-4 py-16 md:py-24 border-t border-gray-100">
           <div className="max-w-4xl md:ml-0 md:mr-auto lg:max-w-none">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 tracking-tight leading-tight">
@@ -91,111 +91,42 @@ export default function ProcessPage() {
             </h2>
 
             <div className="lg:max-w-none">
-              <Accordion title="Sheet Goods">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div>
-                    <h4 className="text-sm text-gray-400 mb-4 tracking-tight">
-                      Finished
-                    </h4>
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-2">
-                      {finishedSheetGoods.map((item) => (
-                        <p key={item.id} className="text-lg tracking-tight">
-                          {item.name}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="text-sm text-gray-400 mb-4 tracking-tight">
-                      Box
-                    </h4>
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-2">
-                      {boxSheetGoods.map((item) => (
-                        <p key={item.id} className="text-lg tracking-tight">
-                          {item.name}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+              {/* Forward Facing */}
+              <Accordion title="Forward Facing" defaultOpen={true}>
+                <MaterialCarousel
+                  title="Sheet Goods & Hardwoods"
+                  items={woods}
+                  showType={true}
+                />
               </Accordion>
 
-              <Accordion title="Hardwoods">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-2">
-                  {hardwoods?.map((item) => (
-                    <p key={item.id} className="text-lg tracking-tight">
-                      {item.name}
-                    </p>
-                  ))}
-                </div>
+              {/* Box Materials */}
+              <Accordion title="Box Materials">
+                <MaterialCarousel title="Interior" items={boxMaterials} />
               </Accordion>
 
+              {/* Finishes */}
               <Accordion title="Finishes">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <div>
-                    <h4 className="text-sm text-gray-400 mb-4 tracking-tight">
-                      OSMO Oils
-                    </h4>
-                    <div className="space-y-2">
-                      {osmoFinishes?.map((item) => (
-                        <p key={item.id} className="text-lg tracking-tight">
-                          {item.name}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="text-sm text-gray-400 mb-4 tracking-tight">
-                      OSMO Wood Wax
-                    </h4>
-                    <div className="flex flex-wrap gap-4">
-                      {osmoWaxColors?.map((wax) => (
-                        <div key={wax.id} className="flex items-center gap-2">
-                          <div
-                            className="w-4 h-4 rounded-full border border-gray-200"
-                            style={{ backgroundColor: wax.color }}
-                          />
-                          <span className="text-base tracking-tight">
-                            {wax.name}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="text-sm text-gray-400 mb-4 tracking-tight">
-                      Linolie & Pigment
-                    </h4>
-                    <div className="flex flex-wrap gap-4">
-                      {linolieColors?.map((color) => (
-                        <div key={color.id} className="flex items-center gap-2">
-                          <div
-                            className="w-4 h-4 rounded-full border border-gray-200"
-                            style={{ backgroundColor: color.color }}
-                          />
-                          <span className="text-base tracking-tight">
-                            {color.name}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                <MaterialCarousel
+                  title="OSMO Polyx"
+                  items={osmoPolyx}
+                  size="small"
+                />
+                <MaterialCarousel
+                  title="OSMO Wood Wax"
+                  items={osmoWoodWax}
+                  size="small"
+                />
+                <MaterialCarousel
+                  title="Linolie & Pigment"
+                  items={linolie}
+                  size="small"
+                />
               </Accordion>
 
+              {/* Joinery & Style */}
               <Accordion title="Joinery & Style">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                  {joineryStyles?.map((style) => (
-                    <div key={style.id}>
-                      <h4 className="text-lg font-bold tracking-tight mb-1">
-                        {style.name}
-                      </h4>
-                      <p className="text-base text-gray-600 tracking-tight leading-snug">
-                        {style.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                <MaterialCarousel title="Styles" items={joineryStyles} />
               </Accordion>
             </div>
           </div>

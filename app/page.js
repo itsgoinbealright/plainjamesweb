@@ -14,7 +14,7 @@ export default function Home() {
         <IntroSection />
         <FeaturedProjects />
         {/* <ImpactTeaser /> Phase 2 */}
-        <ContactForm />
+        {/*<ContactForm />} */}
       </main>
       <Footer />
     </>
