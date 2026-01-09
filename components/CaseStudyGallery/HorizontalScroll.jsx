@@ -14,7 +14,7 @@ export default function HorizontalScroll({ images }) {
   useEffect(() => {
     const animate = () => {
       const diff = targetRef.current - currentRef.current;
-      currentRef.current += diff * 0.03;
+      currentRef.current += diff * 0.015;
       setTranslateX(currentRef.current);
       rafRef.current = requestAnimationFrame(animate);
     };
@@ -30,7 +30,7 @@ export default function HorizontalScroll({ images }) {
       const scrolled = Math.max(0, -rect.top);
 
       // Stop at 85% scroll to let animation catch up
-      const progress = Math.min(1, scrolled / (scrollable * 0.85));
+      const progress = Math.min(1, scrolled / (scrollable * 0.7));
 
       targetRef.current = progress * maxTranslate;
     };
@@ -46,7 +46,7 @@ export default function HorizontalScroll({ images }) {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative h-[700vh]">
+    <div ref={containerRef} className="relative h-[1000vh]">
       <div className="sticky top-0 h-screen overflow-hidden flex items-center">
         <div
           ref={trackRef}

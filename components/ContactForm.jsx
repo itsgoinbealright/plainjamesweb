@@ -10,8 +10,6 @@ export default function ContactForm() {
     phone: "",
     message: "",
     location: "",
-    architect: "",
-    workType: "",
     scope: [],
     preferredContact: "",
     phoneType: "",
@@ -55,8 +53,6 @@ export default function ContactForm() {
         phone: "",
         message: "",
         location: "",
-        architect: "",
-        workType: "",
         scope: [],
         preferredContact: "",
         phoneType: "",
@@ -67,24 +63,19 @@ export default function ContactForm() {
     }
   };
 
-  const architectOptions = [
-    { value: "yes", label: "Yup" },
-    { value: "no", label: "Nope" },
-    { value: "unsure", label: "Not sure" },
-  ];
-
-  const workTypeOptions = [
-    { value: "interior", label: "Interior" },
-    { value: "exterior", label: "Exterior" },
-    { value: "both", label: "Both" },
-  ];
-
   const scopeOptions = [
-    { value: "millwork", label: "Millwork", icon: "🪵" },
-    { value: "carpentry", label: "Carpentry", icon: "🔨" },
-    { value: "renovation", label: "Renovation", icon: "🏠" },
-    { value: "project-management", label: "PM", icon: "📋" },
-    { value: "design", label: "Design", icon: "✏️" },
+    { value: "millwork", label: "Millwork" },
+    { value: "carpentry", label: "Carpentry" },
+    { value: "renovation", label: "Renovation" },
+    { value: "kitchen", label: "Kitchen" },
+    { value: "bathroom", label: "Bathroom" },
+    { value: "furniture", label: "Furniture" },
+    { value: "deck", label: "Deck" },
+    { value: "sauna", label: "Sauna" },
+    { value: "gazebo", label: "Gazebo" },
+    { value: "pergola", label: "Pergola" },
+    { value: "project-management", label: "Project Management" },
+    { value: "design", label: "Design" },
   ];
 
   return (
@@ -92,7 +83,7 @@ export default function ContactForm() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Left - Form */}
         <div>
-          <h2 className="text-3xl font-bold mb-4">Project Enquiry</h2>
+          <h2 className="text-3xl font-bold mb-12">Project Enquiry</h2>
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Email with preference */}
@@ -192,7 +183,7 @@ export default function ContactForm() {
             />
 
             <div className="pb-4">
-              <p className="text-gray-500 mb-3">How can we help?</p>
+              <p className="text-gray-500 mb-6">How can we help?</p>
               <div className="flex gap-2 py-2 flex-wrap">
                 {scopeOptions.map((option) => (
                   <button
