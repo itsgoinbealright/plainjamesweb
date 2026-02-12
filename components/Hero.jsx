@@ -4,10 +4,9 @@ import Navbar from "./Navbar";
 
 export default function Hero() {
   return (
-    <section className="relative w-full h-screen overflow-hidden">
+    <section className="relative w-full h-[75vh] md:h-screen overflow-hidden">
       {/* Video Background - Fixed Position */}
       <div className="fixed inset-0 w-full h-screen -z-10">
-        
         {/* Mobile: Portrait video (default, up to 1200px) */}
         <video
           autoPlay

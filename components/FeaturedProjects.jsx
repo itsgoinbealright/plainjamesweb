@@ -7,12 +7,11 @@ export default function FeaturedProjects() {
 
   return (
     <section className="p-4 bg-white">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {projects.map((project) => (
           <ProjectCard
             key={project.slug}
             image={project.mainImage}
-            hoverImage={project.hoverImage}
             title={project.title}
             subtitle={project.subtitle}
             accentTitle={project.accentTitle}
@@ -21,10 +20,10 @@ export default function FeaturedProjects() {
         ))}
       </div>
 
-      <div className="text-center">
+      <div className="text-right">
         <Link
           href="/projects"
-          className="text-xl font-medium text-black hover:text-forest-green transition-colors"
+          className="text-xl font-bold tracking-tight text-black hover:text-forest-green transition-colors"
         >
           See All Projects
         </Link>
