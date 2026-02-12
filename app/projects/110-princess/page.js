@@ -105,7 +105,7 @@ function SfInput({ id, values, onChange }) {
   const sub = (parseFloat(sf) || 0) * (parseFloat(rate) || 0)
 
   return (
-    <div className="flex items-center gap-2 shrink-0">
+    <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
       <div className="flex items-center gap-1">
         <input
           type="number"
@@ -159,8 +159,12 @@ function Card({ section, values, onChange, total }) {
         {section.items.map((item, i) => (
           <div
             key={item.id}
-            className={`grid grid-cols-[1fr_auto] items-center gap-4 px-6 py-3.5 ${
+            className={`px-6 py-3.5 ${
               i < section.items.length - 1 ? 'border-b border-[#F5F0E8]' : ''
+            } ${
+              item.type === 'sf'
+                ? 'flex flex-col gap-2 sm:grid sm:grid-cols-[1fr_auto] sm:items-center sm:gap-4'
+                : 'grid grid-cols-[1fr_auto] items-center gap-4'
             }`}
           >
             <div className="flex flex-col gap-0.5">
